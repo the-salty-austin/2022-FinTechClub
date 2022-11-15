@@ -168,7 +168,7 @@ def backtest(df, UPPER, LOWER, grid_mode,
                         raise AlreadyBought
 
                     day_buy_tx_cnt += 1
-                    cash -= each_grid_coin*grids[tx_i]*(2-TX_FEE)
+                    cash -= each_grid_coin*grids[tx_i]*(1+TX_FEE)
 
                     status[tx_i]['status'] = 'coin'
                     status[tx_i]['bought_at'] = grids[tx_i]
