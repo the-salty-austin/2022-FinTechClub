@@ -25,9 +25,6 @@ class UndefinedMode(Exception):
 def backtest(
     df, UPPER, LOWER, grid_mode, NUM=200, TX_FEE=0.0005, INVEST=1000, show_tx=True
 ):
-
-    # pp = pprint.PrettyPrinter(indent=2)
-
     df.timestamp = pd.to_datetime(df.timestamp)
 
     if grid_mode == "arithmetic":

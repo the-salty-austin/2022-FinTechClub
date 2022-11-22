@@ -1,37 +1,29 @@
 from time import time
 
 
-def set_arithmetic_grid(upper, lower, num, TX_FEE=0.0005):
+def set_arithmetic_grid(upper: float, lower: float, num: int, TX_FEE: float = 0.0005):
     """upper: upper bound / lower: lower bound / num: number of grids"""
     grids = []
     gap = (upper - lower) / (num - 1)
     for i in range(num):
         grids.append(lower + i * gap)
-
-    grid_profits = [0] * num
-    for i in range(num):
-        if i == 0:
-            grid_profits[i] = 0
-        else:
-            grid_profits[i] = (grids[i] / grids[i - 1] - 1) * (1 - TX_FEE)
-
+    grid_profits = get_grid_profits(grids, num, TX_FEE)
     return grids, grid_profits
 
 
-def set_geometric_grid(upper, lower, num, TX_FEE=0.0005):
+def set_geometric_grid(upper: float, lower: float, num: int, TX_FEE: float = 0.0005):
     grids = []
     percent_per_grid = (upper / lower) ** (1 / (num - 1))
     for i in range(num):
         grids.append(lower * (percent_per_grid) ** i)
-
-    grid_profits = [0] * num
-    for i in range(num):
-        if i == 0:
-            grid_profits[i] = 0
-        else:
-            grid_profits[i] = (grids[i] / grids[i - 1] - 1) * (1 - TX_FEE)
-
+    grid_profits = get_grid_profits(grids, num, TX_FEE)
     return grids, grid_profits
+
+
+def get_grid_profits(grids, num: int, TX_FEE: float):
+    grid_profits = [0] * num
+    for i in range(1, num):
+        grid_profits[i] = (grids[i] / grids[i - 1] - 1) * (1 - TX_FEE)
 
 
 def asset_evaluation(
