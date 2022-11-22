@@ -51,8 +51,7 @@ def get_data_since(symbol: str, startTime: datetime, endTime: datetime) -> pd.Da
             ]
         """
         for row in price:
-            # time, open, high, low, close, volume
-            t, o, h, l, c, v = (
+            time, open_, high, low, close, volume = (
                 int(row[0]),
                 float(row[1]),
                 float(row[2]),
@@ -60,9 +59,8 @@ def get_data_since(symbol: str, startTime: datetime, endTime: datetime) -> pd.Da
                 float(row[4]),
                 float(row[5]),
             )
-            unixTimeNow = t
-            data.append([t, o, h, l, c, v])
-            # print( [t, o, h, l, c, v] )。
+            unixTimeNow = time
+            data.append([time, open_, high, low, close, volume])
         unixTimeNow += 60 * 1000
 
     df = pd.DataFrame(
