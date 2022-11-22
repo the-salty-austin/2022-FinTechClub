@@ -18,7 +18,7 @@ def backtest(
 ):
     df.timestamp = pd.to_datetime(df.timestamp)
 
-    grids, grid_profits = set_grid(UPPER, LOWER, NUM, grid_mode)
+    grids = set_grid(UPPER, LOWER, NUM, grid_mode)
     print(f"{len(grids)} grids set. (from {grids[0]} to {grids[-1]})")
     print(f"{len(df)} data points loaded.")
 

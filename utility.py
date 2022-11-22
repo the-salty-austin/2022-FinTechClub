@@ -2,7 +2,7 @@ from time import time
 
 
 def set_grid(
-    upper: float, lower: float, num: int, grid_mode: str, TX_FEE: float = 0.0005
+    upper: float, lower: float, num: int, grid_mode: str
 ):
     """upper: upper bound / lower: lower bound / num: number of grids"""
     grids = []
@@ -15,12 +15,7 @@ def set_grid(
         percent_per_grid: float = (upper / lower) ** (1 / (num - 1))
         for i in range(num):
             grids.append(lower * (percent_per_grid) ** i)
-
-    grid_profits = [0] * num
-    for i in range(1, num):
-        grid_profits[i] = (grids[i] / grids[i - 1] - 1) * (1 - TX_FEE)
-
-    return grids, grid_profits
+    return grids
 
 
 def asset_evaluation(
