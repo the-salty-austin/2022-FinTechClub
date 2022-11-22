@@ -7,11 +7,20 @@ import pandas as pd
 
 @timer
 def backtest(
-    df, UPPER, LOWER, grid_mode, NUM=200, TX_FEE=0.0005, INVEST=1000, show_tx=True
+    df: pd.DataFrame,
+    UPPER: float,
+    LOWER: float,
+    grid_mode: str,
+    NUM: int = 200,
+    TX_FEE: float = 0.0005,
+    INVEST: float = 1000,
+    show_tx: bool = True,
 ):
     df.timestamp = pd.to_datetime(df.timestamp)
 
     grids, grid_profits = set_grid(UPPER, LOWER, NUM, grid_mode)
+    print(f"{len(grids)} grids set. (from {grids[0]} to {grids[-1]})")
+    print(f"{len(df)} data points loaded.")
 
     # initializing the grid trade bot
     # say, current price is 32, and the grids are [20,25,30,35,40,45]
@@ -96,13 +105,15 @@ def backtest(
         # e.g. current price is 195, all grids with prices >=195 are SELLing ones. <195 are BUYing ones.
         buy = []
         sell = []
+
+        # TODO: binary search
         for j, grid in enumerate(grids):
             if grid <= cur_price:
                 # if grid <= row.close:
                 if j == NUM - 1:
                     continue  # top grid: only sell, no buy
                 buy.append(j)
-            elif grid >= cur_price:
+            else:
                 # elif grid > row.close:
                 if j == 0:
                     continue  # bottom grid: no sell, only buy
@@ -113,6 +124,7 @@ def backtest(
         # count how many grids are in this minute's price range (low~high)
         cnt = 0
         tx_idx = []
+        # TODO: binary search
         for i, grid in enumerate(grids):
             if low <= grid <= high:
                 tx_idx.append(i)
