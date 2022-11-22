@@ -1,6 +1,5 @@
 from utility import *
 from download import *
-from utility import timer
 from exceptions import *
 
 import pandas as pd
@@ -12,12 +11,7 @@ def backtest(
 ):
     df.timestamp = pd.to_datetime(df.timestamp)
 
-    if grid_mode == "arithmetic":
-        grids, grid_profits = set_arithmetic_grid(UPPER, LOWER, NUM)
-    elif grid_mode == "geometric":
-        grids, grid_profits = set_geometric_grid(UPPER, LOWER, NUM)
-    else:
-        raise UndefinedMode
+    grids, grid_profits = set_grid(UPPER, LOWER, NUM, grid_mode)
 
     # initializing the grid trade bot
     # say, current price is 32, and the grids are [20,25,30,35,40,45]
