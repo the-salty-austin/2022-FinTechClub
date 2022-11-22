@@ -16,6 +16,7 @@ def backtest(
     INVEST: float = 1000,
     show_tx: bool = True,
 ):
+    df.timestamp = pd.to_datetime(df.timestamp)
     grids = set_grid(UPPER, LOWER, NUM, grid_mode)
     i_th_grid, i_th_grid_inv = get_grid_functions(UPPER, LOWER, NUM, grid_mode)
     print(f"{UPPER=} {LOWER=} {NUM=} {grid_mode=}")
@@ -85,7 +86,6 @@ def backtest(
 
     # iterating over each minute
     prev_date = df.timestamp.iloc[1].date()
-    last_tx_i = -1
     first_tx_executed = False
     for minute_idx, row in df.iterrows():
         if minute_idx == 0:
@@ -172,7 +172,6 @@ def backtest(
                     status[tx_i - 1]["status"] = "cash"
                     status[tx_i - 1]["bought_at"] = -1
                     status[tx_i - 1]["holding"] = 0
-                    last_tx_i = tx_i - 1
                     first_tx_executed = True
 
                 elif tx_i in buy:
@@ -195,7 +194,6 @@ def backtest(
                     status[tx_i]["status"] = "coin"
                     status[tx_i]["bought_at"] = grids[tx_i]
                     status[tx_i]["holding"] = each_grid_coin
-                    last_tx_i = tx_i
                     first_tx_executed = True
 
         # print(minute_idx+1)
