@@ -1,24 +1,9 @@
 from utility import *
 from download import *
 from utility import timer
+from exceptions import *
 
 import pandas as pd
-
-
-class NoCoinToSell(Exception):
-    pass
-
-
-class NoCashToBuy(Exception):
-    pass
-
-
-class AlreadyBought(Exception):
-    pass
-
-
-class UndefinedMode(Exception):
-    pass
 
 
 @timer
