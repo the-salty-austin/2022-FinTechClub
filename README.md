@@ -17,3 +17,13 @@ pip3 install -r requirements.txt
 ```bash
 python3 main.py
 ```
+
+To lint the code, run the following:
+
+```bash
+black .
+```
+
+## Environment
+
+Use black to lint the code.
