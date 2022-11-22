@@ -12,7 +12,7 @@ def set_grid(
             grids.append(lower + i * gap)
 
     elif grid_mode == "geometric":
-        percent_per_grid = (upper / lower) ** (1 / (num - 1))
+        percent_per_grid: float = (upper / lower) ** (1 / (num - 1))
         for i in range(num):
             grids.append(lower * (percent_per_grid) ** i)
 

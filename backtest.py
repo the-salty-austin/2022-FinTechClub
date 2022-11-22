@@ -217,7 +217,7 @@ def backtest(
 if __name__ == "__main__":
     df = get_data_since(
         "BTC",
-        datetime.datetime(2022, 11, 1, 0, 0),
-        datetime.datetime(2022, 11, 2, 12, 30),
+        datetime(2022, 11, 1, 0, 0),
+        datetime(2022, 11, 2, 12, 30),
     )
     backtest(df, 35000, 15000, "geometric", NUM=190, TX_FEE=0.0005, INVEST=1000)
