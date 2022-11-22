@@ -3,6 +3,7 @@ import requests
 from datetime import datetime
 import pandas as pd
 from utility import timer
+import os
 
 url = "https://www.binance.com/api/v3/klines"
 
@@ -14,6 +15,9 @@ def get_data_since(symbol: str, startTime: datetime, endTime: datetime) -> pd.Da
     startTime: when to start \n
     endTime: last row of output is no earlier than it
     """
+    filename = f"{symbol}_{startTime.strftime('%Y-%m-%d')}.csv"
+    if os.path.exists(filename):
+        return pd.read_csv(filename)
     data = []
 
     unixTimeNow = startTime.timestamp() * 1000
@@ -65,14 +69,14 @@ def get_data_since(symbol: str, startTime: datetime, endTime: datetime) -> pd.Da
         data, columns=["timestamp", "open", "high", "low", "close", "volume"]
     )
     df.timestamp = pd.to_datetime(df.timestamp, unit="ms")
-
+    df.to_csv(filename, index=False)
     return df
 
 
 if __name__ == "__main__":
     df = get_data_since(
         "BNB",
-        datetime(2022, 4, 1, 0, 0),
+        datetime(2022, 1, 1, 0, 0),
         datetime(2022, 4, 2, 12, 30),
     )
     print(df)

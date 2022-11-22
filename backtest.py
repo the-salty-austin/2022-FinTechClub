@@ -16,9 +16,9 @@ def backtest(
     INVEST: float = 1000,
     show_tx: bool = True,
 ):
-    df.timestamp = pd.to_datetime(df.timestamp)
-
     grids = set_grid(UPPER, LOWER, NUM, grid_mode)
+    i_th_grid, i_th_grid_inv = get_grid_functions(UPPER, LOWER, NUM, grid_mode)
+    print(f"{UPPER=} {LOWER=} {NUM=} {grid_mode=}")
     print(f"{len(grids)} grids set. (from {grids[0]} to {grids[-1]})")
     print(f"{len(df)} data points loaded.")
 

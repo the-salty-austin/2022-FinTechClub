@@ -1,5 +1,7 @@
-from time import time
+from exceptions import UndefinedMode
 
+from time import time
+import math
 
 def set_grid(
     upper: float, lower: float, num: int, grid_mode: str
@@ -16,6 +18,26 @@ def set_grid(
         for i in range(num):
             grids.append(lower * (percent_per_grid) ** i)
     return grids
+
+
+def get_grid_functions(upper: float, lower: float, num: int, grid_mode: str):
+    if num <= 1:
+        raise ValueError("num must be greater than 1")
+    if grid_mode == "arithmetic":
+        gap = (upper - lower) / (num - 1)
+        def i_th_grid(i):
+            return lower + i * gap
+        def i_th_grid_inv(price):
+            return int((price - lower) / gap)
+        return i_th_grid, i_th_grid_inv
+    elif grid_mode == "geometric":
+        percent_per_grid: float = (upper / lower) ** (1 / (num - 1))
+        def i_th_grid(i):
+            return lower * (percent_per_grid) ** i
+        def i_th_grid_inv(price):
+            return int((math.log(price / lower) / math.log(percent_per_grid)))
+        return i_th_grid, i_th_grid_inv
+    raise UndefinedMode
 
 
 def asset_evaluation(
