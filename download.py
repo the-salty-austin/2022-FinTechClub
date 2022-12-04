@@ -2,14 +2,16 @@ import requests
 # import pprint
 import datetime
 import pandas as pd
+import csv
 
 url = "https://www.binance.com/api/v3/klines"
 
-def get_data_since(symbol: str, startTime: datetime.datetime, endTime: datetime.datetime) -> pd.DataFrame:
+def get_data_since(symbol: str, startTime: datetime.datetime, endTime: datetime.datetime, interval: str) -> pd.DataFrame:
     '''
     symbol: BTC, ETH, BNB... \n 
     startTime: when to start \n 
-    endTime: last row of output is no earlier than it
+    endTime: last row of output is no earlier than it\n
+    interval: '1m', '4h'
     '''
     data = []
 
@@ -18,7 +20,7 @@ def get_data_since(symbol: str, startTime: datetime.datetime, endTime: datetime.
     while unixTimeNow <= endTime.timestamp()*1000:
         params = {
             'symbol': f'{symbol}USDT',
-            'interval': '1m',
+            'interval': interval,
             'limit': '1000',
             'startTime': int( unixTimeNow ),
         }
@@ -57,5 +59,6 @@ def get_data_since(symbol: str, startTime: datetime.datetime, endTime: datetime.
     return df
 
 if __name__=="__main__":
-    df = get_data_since("BNB", datetime.datetime(2022, 4, 1, 0, 0), datetime.datetime(2022, 4, 2, 12, 30) )
+    df = get_data_since("BTC", datetime.datetime(2020, 1, 1, 0, 0), datetime.datetime(2022, 11, 25, 0, 0), '4h' )
+    df.to_csv('./csv/btc4h.csv', index=False)
     print(df)
