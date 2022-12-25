@@ -72,9 +72,9 @@ def get_data_since(symbol: str, startTime: datetime, endTime: datetime) -> pd.Da
 
 if __name__ == "__main__":
     df = get_data_since(
-        "BNB",
-        datetime(2022, 4, 1, 0, 0),
-        datetime(2022, 4, 2, 12, 30),
+        "ETH",
+        datetime(2021, 1, 1, 0, 0),
+        datetime(2022, 12, 24, 12, 30),
     )
-    # df.to_csv('./csv/btc4h.csv', index=False)
+    df.to_csv('./csv/eth.csv', index=False)
     print(df)
