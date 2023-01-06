@@ -4,16 +4,18 @@ from datetime import datetime
 import pandas as pd
 import csv
 from utility import timer
+import time
 
 url = "https://www.binance.com/api/v3/klines"
 
 
 @timer
-def get_data_since(symbol: str, startTime: datetime, endTime: datetime) -> pd.DataFrame:
+def get_data_since(symbol: str, startTime: datetime, endTime: datetime, interval: str) -> pd.DataFrame:
     """
     symbol: BTC, ETH, BNB... \n
     startTime: when to start \n
     endTime: last row of output is no earlier than it
+    interval: '1m', '1h', '4h', '1d'
     """
     data = []
 
@@ -22,7 +24,7 @@ def get_data_since(symbol: str, startTime: datetime, endTime: datetime) -> pd.Da
     while unixTimeNow <= endTime.timestamp() * 1000:
         params = {
             "symbol": f"{symbol}USDT",
-            "interval": "1m",
+            "interval": interval,
             "limit": "1000",
             "startTime": int(unixTimeNow),
         }
@@ -60,7 +62,16 @@ def get_data_since(symbol: str, startTime: datetime, endTime: datetime) -> pd.Da
             unixTimeNow = t
             data.append([t, o, h, l, c, v])
             # print( [t, o, h, l, c, v] )。
-        unixTimeNow += 60 * 1000
+        if interval=="1m": 
+            s = 60*1*1
+        elif interval=="1h":
+            s = 60*60*1
+        elif interval=="4h":
+            s = 60*60*4
+        elif interval=="1d":
+            s = 60*60*24
+        unixTimeNow += s*1000
+        time.sleep(0.5)
 
     df = pd.DataFrame(
         data, columns=["timestamp", "open", "high", "low", "close", "volume"]
@@ -72,9 +83,10 @@ def get_data_since(symbol: str, startTime: datetime, endTime: datetime) -> pd.Da
 
 if __name__ == "__main__":
     df = get_data_since(
-        "ETH",
+        "BTC",
         datetime(2021, 1, 1, 0, 0),
         datetime(2022, 12, 24, 12, 30),
+        "1h"
     )
-    df.to_csv('./csv/eth.csv', index=False)
+    df.to_csv('./csv/btc1h.csv', index=False)
     print(df)
